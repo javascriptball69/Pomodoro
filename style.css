@@ -1,6 +1,16 @@
 * {
   background-color: hsl(0, 0%, 20%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
   margin: 0;
   overflow: hidden;
+}
+
+#clock {
+  background-color: blue;
+  width: 512px;
+  height: 512px;
 }
