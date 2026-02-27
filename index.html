@@ -10,17 +10,22 @@
   <title>Pomodoro</title>
 </head>
 <body>
-  <h1 id="title">Pomodoro</h1>
+  <div id="pomodoro-wrapper">
+    <h1 class="pomodoro-text" id="title">Pomodoro</h1>
 
-  <div id="clock">
-    <div id="clock-base">
-      <p id="clock-time">25:00</p>
+    <div id="clock">
+      <div id="clock-base">
+        <p id="clock-time">25:00</p>
+      </div>
+      <i class="fa-solid fa-play" id="btn"></i>
+      <audio id="ding" src="Sounds/ding.mp3" loop></audio>
+      <audio id="click" src="Sounds/click.mp3" preload="metadata"></audio>
     </div>
-    <i class="fa-solid fa-play" id="btn"></i>
-    <audio id="ding" src="Sounds/ding.mp3" loop></audio>
-    <audio id="click" src="Sounds/click.mp3" preload="metadata"></audio>
+
+    <h1 class="pomodoro-text" id="pomodoro-tracker">0/4 pomodoros</h1>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>

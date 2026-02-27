@@ -18,21 +18,34 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#title {
+#pomodoro-wrapper {
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pomodoro-text {
   background-color: rgb(64, 128, 255);
   border-radius: 1vw;
   min-width: 256px;
   width: 25vw;
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(2rem, 5vw, 6rem);
+  min-height: 2rem;
   text-align: center;
+}
+
+#title {
+  font-size: clamp(2rem, 5vw, 6rem);
+}
+
+#pomodoro-tracker {
+  font-size: clamp(2rem, 3vw, 6rem);
 }
 
 #clock {
