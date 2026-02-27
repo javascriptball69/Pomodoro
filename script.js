@@ -8,6 +8,7 @@ const restTime = 5;
 let isWork = false;
 let timer = null;
 let timeLeft = null;
+let dinging = false;
 
 function updateDisplay() {
   const minutes = Math.floor(timeLeft / 60);
@@ -17,6 +18,8 @@ function updateDisplay() {
 
 function resetTimer() {
   isWork = !isWork;
+  console.log(isWork);
+  timer = null;
   timeLeft = (isWork ? workTime : restTime) * 60;  // Convert to seconds
   updateDisplay();
 }
@@ -33,10 +36,9 @@ function startTimer() {
       clearInterval(timer);
       timer = null;
 
-      // Make it ding until the user clicks the button to close it
+      dinging = true;
+      btn.classList.replace("fa-pause", "fa-x");
       ding.play();
-
-      resetTimer();
     }
   }, 1000);
 }
@@ -48,14 +50,22 @@ function pauseTimer() {
 
 btn.addEventListener("click", () => {
   click.play();
-  if (timer) {
-    btn.classList.replace("fa-pause", "fa-play");
-    pauseTimer();
-    console.log("Paused!");
+  if (dinging) {
+    dinging = false;
+    ding.pause();
+    ding.currentTime = 0;
+    btn.classList.replace("fa-x", "fa-play");
+    resetTimer();
   } else {
-    btn.classList.replace("fa-play", "fa-pause");
-    startTimer();
-    console.log("Started!");
+    if (timer) {
+      btn.classList.replace("fa-pause", "fa-play");
+      pauseTimer();
+      console.log("Paused!");
+    } else {
+      btn.classList.replace("fa-play", "fa-pause");
+      startTimer();
+      console.log("Started!");
+    }
   }
 });
 
