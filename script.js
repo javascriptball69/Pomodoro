@@ -51,7 +51,7 @@ btn.addEventListener("click", () => {
     startTimer();
     console.log("Started!");
   }
-}, { once : true });
+});
 
 // Initialize display
 updateDisplay();
