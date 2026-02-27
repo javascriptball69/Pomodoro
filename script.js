@@ -2,8 +2,8 @@ const clockTime = document.getElementById("clock-time");
 const btn = document.getElementById("btn");
 const ding = document.getElementById("ding");
 
-const workTime = 5;
-const restTime = 3;
+const workTime = 1500;
+const restTime = 300;
 let isWork = true;
 let timer = null;
 let timeLeft = workTime;
