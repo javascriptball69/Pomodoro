@@ -51,10 +51,10 @@ body {
 
 #clock-time {
   color: white;
-  font-size: 10rem;
+  font-size: 6rem;
 }
 
-#start-btn {
+#btn {
   color: rgb(0, 0, 255);
   font-size: 3rem;
   display: block;
@@ -62,10 +62,10 @@ body {
   cursor: pointer;
 }
 
-#start-btn:hover {
+#btn:hover {
   color: rgb(0, 0, 223);
 }
 
-#start-btn:active {
+#btn:active {
   transform: scale(0.9);
 }
