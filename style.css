@@ -5,8 +5,12 @@
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
-  user-select: none;
-  -webkit-user-select: none;
+}
+
+.no-select {
+  -webkit-user-select: none; /* Safari, iOS Safari */
+  -ms-user-select: none;     /* Old IE/Edge */
+  user-select: none;         /* Standard */
 }
 
 body {
