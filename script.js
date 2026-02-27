@@ -1,17 +1,24 @@
 const clockTime = document.getElementById("clock-time");
 const btn = document.getElementById("btn");
 const ding = document.getElementById("ding");
+const click = document.getElementById("click");
 
-const workTime = 1500;
-const restTime = 300;
-let isWork = true;
+const workTime = 25;  // In minutes
+const restTime = 5;
+let isWork = false;
 let timer = null;
-let timeLeft = workTime;
+let timeLeft = null;
 
 function updateDisplay() {
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   clockTime.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function resetTimer() {
+  isWork = !isWork;
+  timeLeft = (isWork ? workTime : restTime) * 60;  // Convert to seconds
+  updateDisplay();
 }
 
 function startTimer() {
@@ -29,9 +36,7 @@ function startTimer() {
       // Make it ding until the user clicks the button to close it
       ding.play();
 
-      isWork = !isWork;
-      timeLeft = isWork ? workTime : restTime;
-      updateDisplay();
+      resetTimer();
     }
   }, 1000);
 }
@@ -42,6 +47,7 @@ function pauseTimer() {
 }
 
 btn.addEventListener("click", () => {
+  click.play();
   if (timer) {
     btn.classList.replace("fa-pause", "fa-play");
     pauseTimer();
@@ -54,4 +60,4 @@ btn.addEventListener("click", () => {
 });
 
 // Initialize display
-updateDisplay();
+resetTimer();
