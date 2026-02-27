@@ -25,19 +25,23 @@ body {
 #title {
   background-color: rgb(64, 128, 255);
   border-radius: 1vw;
+  min-width: 256px;
+  width: 25vw;
   position: absolute;
   top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 4rem;
-  padding: 1rem 5rem;
+  font-size: clamp(2rem, 5vw, 6rem);
+  text-align: center;
 }
 
 #clock {
   background-color: rgb(64, 128, 255);
-  border-radius: 5vw ;
-  width: 24rem;
-  height: 24rem;
+  border-radius: 5vw;
+  min-width: 256px;
+  width: 25vw;
+  min-height: 256px;
+  height: 25vw;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -47,8 +51,10 @@ body {
 #clock-base {
   border: solid 1rem rgb(0, 0, 162);
   border-radius: 50%;
-  width: 16rem;
-  height: 16rem;
+  min-width: 192px;
+  width: 75%;
+  min-height: 192px;
+  height: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,12 +62,12 @@ body {
 
 #clock-time {
   color: white;
-  font-size: 6rem;
+  font-size: clamp(4rem, 7vw, 8rem);
 }
 
 #btn {
   color: rgb(32, 0, 192);
-  font-size: 3rem;
+  font-size: clamp(2rem, 3vw, 4rem);
   display: block;
   margin: 0 auto;
   cursor: pointer;
