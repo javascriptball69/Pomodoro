@@ -1,5 +1,6 @@
 const clockTime = document.getElementById("clock-time");
 const btn = document.getElementById("btn");
+const pomodoroStatus = document.getElementById("pomodoro-status");
 const pomodoroTracker = document.getElementById("pomodoro-tracker");
 const ding = document.getElementById("ding");
 const click = document.getElementById("click");
@@ -23,6 +24,7 @@ function resetTimer() {
   console.log(isWork);
   timer = null;
   timeLeft = (isWork ? workTime : (pomodoroCount === 4 ? restTime * 3 : restTime)) * 60;  // Convert to seconds
+  pomodoroStatus.textContent = isWork ? "Work" : "Rest";
   updateDisplay();
 }
 

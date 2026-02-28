@@ -48,6 +48,15 @@ body {
   font-size: clamp(2rem, 3dvw, 6rem);
 }
 
+#pomodoro-status {
+  color: rgb(32, 0, 192);
+  font-weight: bold;
+  font-size: clamp(2rem, 3dvw, 4rem);
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
 #clock {
   background-color: rgb(64, 128, 255);
   border-radius: 5dvw;
@@ -59,6 +68,14 @@ body {
   justify-content: space-evenly;
   align-items: center;
   flex-direction: column;
+  padding: 1dvh;
+}
+
+@media (max-width: 768px) {
+  #clock {
+    min-height: 320px;
+    height: 35dvh;
+  }
 }
 
 #clock-base {
@@ -66,8 +83,7 @@ body {
   border-radius: 50%;
   min-width: 192px;
   width: 75%;
-  min-height: 192px;
-  height: 75%;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;
