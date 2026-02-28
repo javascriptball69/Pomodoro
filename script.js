@@ -77,3 +77,4 @@ btn.addEventListener("click", () => {
 
 // Initialize display
 resetTimer();
+
