@@ -1,10 +1,12 @@
 const clockTime = document.getElementById("clock-time");
 const btn = document.getElementById("btn");
+const pomodoroTracker = document.getElementById("pomodoro-tracker");
 const ding = document.getElementById("ding");
 const click = document.getElementById("click");
 
-const workTime = 25;  // In minutes
-const restTime = 5;
+let pomodoroCount = 0;
+const workTime = 2/60;  // In minutes
+const restTime = 1/60;
 let isWork = false;
 let timer = null;
 let timeLeft = null;
@@ -20,7 +22,7 @@ function resetTimer() {
   isWork = !isWork;
   console.log(isWork);
   timer = null;
-  timeLeft = (isWork ? workTime : restTime) * 60;  // Convert to seconds
+  timeLeft = (isWork ? workTime : (pomodoroCount === 4 ? restTime * 3 : restTime)) * 60;  // Convert to seconds
   updateDisplay();
 }
 
@@ -39,6 +41,10 @@ function startTimer() {
       dinging = true;
       btn.classList.replace("fa-pause", "fa-x");
       ding.play();
+
+      if (isWork && pomodoroCount < 4) pomodoroCount++;
+      else if (!isWork && pomodoroCount >= 4) pomodoroCount = 0;
+      pomodoroTracker.textContent = `${pomodoroCount}/4 pomodoro(s)`;
     }
   }, 1000);
 }
