@@ -5,8 +5,8 @@ const ding = document.getElementById("ding");
 const click = document.getElementById("click");
 
 let pomodoroCount = 0;
-const workTime = 5;  // In minutes
-const restTime = 25;
+const workTime = 25;  // In minutes
+const restTime = 5;
 let isWork = false;
 let timer = null;
 let timeLeft = null;
@@ -77,4 +77,3 @@ btn.addEventListener("click", () => {
 
 // Initialize display
 resetTimer();
-
