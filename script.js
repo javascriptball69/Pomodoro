@@ -5,8 +5,8 @@ const ding = document.getElementById("ding");
 const click = document.getElementById("click");
 
 let pomodoroCount = 0;
-const workTime = 2/60;  // In minutes
-const restTime = 1/60;
+const workTime = 5;  // In minutes
+const restTime = 25;
 let isWork = false;
 let timer = null;
 let timeLeft = null;
