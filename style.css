@@ -60,10 +60,9 @@ body {
 #clock {
   background-color: rgb(64, 128, 255);
   border-radius: 5dvw;
-  min-width: 256px;
+  min-width: 16rem;
   width: 25dvw;
-  min-height: 256px;
-  height: 25dvw;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -71,10 +70,19 @@ body {
   padding: 1dvh;
 }
 
+@media (max-height: 480px) {
+  .pomodoro-text {
+    display: none;
+  }
+
+  #clock {
+    justify-content: center;
+  }
+}
+
 @media (max-width: 768px) {
   #clock {
-    min-height: 320px;
-    height: 35dvh;
+    aspect-ratio: 4 / 5;
   }
 }
 
