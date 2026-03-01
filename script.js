@@ -5,13 +5,38 @@ const pomodoroTracker = document.getElementById("pomodoro-tracker");
 const ding = document.getElementById("ding");
 const click = document.getElementById("click");
 
-let pomodoroCount = 0;
 const workTime = 25;  // In minutes
 const restTime = 5;
-let isWork = false;
 let timer = null;
 let timeLeft = null;
 let dinging = false;
+
+function savePomodoroState() {
+  localStorage.setItem("todayPomodoro", JSON.stringify(todayPomodoro));
+}
+
+function loadPomodoroState() {
+  try {
+    return JSON.parse(localStorage.getItem("todayPomodoro"));
+  } catch {
+    return null; // fallback if corrupted
+  }
+}
+
+let todayPomodoro;
+let stored = loadPomodoroState();
+let nowDate = new Date().toISOString().split("T")[0];
+
+if (!stored || stored.date !== nowDate) {
+  todayPomodoro = {
+    date : nowDate,
+    count : 0,
+    isWork : false
+  };
+  savePomodoroState();
+} else {
+  todayPomodoro = stored;
+}
 
 function updateDisplay() {
   const minutes = Math.floor(timeLeft / 60);
@@ -20,11 +45,18 @@ function updateDisplay() {
 }
 
 function resetTimer() {
-  isWork = !isWork;
-  console.log(isWork);
+  todayPomodoro.isWork = !todayPomodoro.isWork;
+  
   timer = null;
-  timeLeft = (isWork ? workTime : (pomodoroCount === 4 ? restTime * 3 : restTime)) * 60;  // Convert to seconds
-  pomodoroStatus.textContent = isWork ? "Work" : "Rest";
+  if (todayPomodoro.isWork) {
+    timeLeft = workTime
+  } else {
+    timeLeft = restTime
+    if (todayPomodoro.count === 4) timeLeft *= 3;  // Complete 4 pomodoros get extra break
+  }
+  timeLeft *= 60;  // Convert to seconds
+  pomodoroStatus.textContent = todayPomodoro.isWork ? "Work" : "Rest";
+  pomodoroTracker.textContent = `${todayPomodoro.count}/4 pomodoro(s)`;
   updateDisplay();
 }
 
@@ -42,11 +74,11 @@ function startTimer() {
 
       dinging = true;
       btn.classList.replace("fa-pause", "fa-x");
-      ding.play();
 
-      if (isWork && pomodoroCount < 4) pomodoroCount++;
-      else if (!isWork && pomodoroCount >= 4) pomodoroCount = 0;
-      pomodoroTracker.textContent = `${pomodoroCount}/4 pomodoro(s)`;
+      if (todayPomodoro.isWork && todayPomodoro.count < 4) todayPomodoro.count++;
+      else if (!todayPomodoro.isWork && todayPomodoro.count >= 4) todayPomodoro.count = 0;
+      savePomodoroState();
+      pomodoroTracker.textContent = `${todayPomodoro.count}/4 pomodoro(s)`;
     }
   }, 1000);
 }
@@ -68,11 +100,9 @@ btn.addEventListener("click", () => {
     if (timer) {
       btn.classList.replace("fa-pause", "fa-play");
       pauseTimer();
-      console.log("Paused!");
     } else {
       btn.classList.replace("fa-play", "fa-pause");
       startTimer();
-      console.log("Started!");
     }
   }
 });
