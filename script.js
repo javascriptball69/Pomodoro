@@ -5,11 +5,11 @@ const pomodoroTracker = document.getElementById("pomodoro-tracker");
 const ding = document.getElementById("ding");
 const click = document.getElementById("click");
 
-const workTime = 25;  // In minutes
-const restTime = 5;
-let timer = null;
-let timeLeft = null;
-let dinging = false;
+const workTime = 25 * 60 * 1000;  // In Ms
+const restTime = 5 * 60 * 1000;
+let remainingMs = null;
+let isTimerRunning = false;
+let isAlarmActive = false;
 
 function savePomodoroState() {
   localStorage.setItem("todayPomodoro", JSON.stringify(todayPomodoro));
@@ -24,85 +24,91 @@ function loadPomodoroState() {
 }
 
 let todayPomodoro;
-let stored = loadPomodoroState();
+let savedState = loadPomodoroState();
 let nowDate = new Date().toISOString().split("T")[0];
 
-if (!stored || stored.date !== nowDate) {
+if (!savedState || savedState.date !== nowDate) {
   todayPomodoro = {
     date : nowDate,
     count : 0,
-    isWork : false
+    isWorkSession : false
   };
   savePomodoroState();
 } else {
-  todayPomodoro = stored;
+  todayPomodoro = savedState;
 }
 
-function updateDisplay() {
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  clockTime.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+function updateDisplay(ms) {
+  const totalSeconds = Math.ceil(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  clockTime.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 }
 
 function resetTimer() {
-  todayPomodoro.isWork = !todayPomodoro.isWork;
+  todayPomodoro.isWorkSession = !todayPomodoro.isWorkSession;
   
-  timer = null;
-  if (todayPomodoro.isWork) {
-    timeLeft = workTime
+  if (todayPomodoro.isWorkSession) {
+    remainingMs = workTime
   } else {
-    timeLeft = restTime
-    if (todayPomodoro.count === 4) timeLeft *= 3;  // Complete 4 pomodoros get extra break
+    remainingMs = restTime
+    if (todayPomodoro.count === 4) remainingMs *= 3;  // Complete 4 pomodoros get extra break
   }
-  timeLeft *= 60;  // Convert to seconds
-  pomodoroStatus.textContent = todayPomodoro.isWork ? "Work" : "Rest";
+  pomodoroStatus.textContent = todayPomodoro.isWorkSession ? "Work" : "Rest";
   pomodoroTracker.textContent = `${todayPomodoro.count}/4 pomodoro(s)`;
-  updateDisplay();
+  updateDisplay(remainingMs);
 }
 
-function startTimer() {
-  if (timer) return;
+function startTimer(totalMs) {
+  if (isTimerRunning) return;
 
-  timer = setInterval(() => {
-    timeLeft--;
-    updateDisplay();
+  isTimerRunning = true;
+  const endTime = Date.now() + totalMs;
 
-    if (timeLeft <= 0) {
+  function tick() {
+    remainingMs = Math.max(0, endTime - Date.now());
+    updateDisplay(remainingMs);
+
+    if (remainingMs <= 0) {
       ding.play();
-      clearInterval(timer);
-      timer = null;
 
-      dinging = true;
+      isTimerRunning = false;
+      isAlarmActive = true;
       btn.classList.replace("fa-pause", "fa-x");
 
-      if (todayPomodoro.isWork && todayPomodoro.count < 4) todayPomodoro.count++;
-      else if (!todayPomodoro.isWork && todayPomodoro.count >= 4) todayPomodoro.count = 0;
+      if (todayPomodoro.isWorkSession && todayPomodoro.count < 4) todayPomodoro.count++;
+      else if (!todayPomodoro.isWorkSession && todayPomodoro.count >= 4) todayPomodoro.count = 0;
       savePomodoroState();
       pomodoroTracker.textContent = `${todayPomodoro.count}/4 pomodoro(s)`;
+    } else {
+      if (!isTimerRunning) return;
+      setTimeout(tick, 250);
     }
-  }, 1000);
+  }
+
+  tick();
 }
 
 function pauseTimer() {
-  clearInterval(timer);
-  timer = null;
+  isTimerRunning = false;
+  updateDisplay(remainingMs)
 }
 
 btn.addEventListener("click", () => {
   click.play();
-  if (dinging) {
-    dinging = false;
+  if (isAlarmActive) {
+    isAlarmActive = false;
     ding.pause();
     ding.currentTime = 0;
     btn.classList.replace("fa-x", "fa-play");
     resetTimer();
   } else {
-    if (timer) {
+    if (isTimerRunning) {
       btn.classList.replace("fa-pause", "fa-play");
       pauseTimer();
     } else {
       btn.classList.replace("fa-play", "fa-pause");
-      startTimer();
+      startTimer(remainingMs);
     }
   }
 });
