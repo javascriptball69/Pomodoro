@@ -59,7 +59,7 @@ body {
 
 #clock {
   background-color: rgb(64, 128, 255);
-  border-radius: 5dvw;
+  border-radius: 5%;
   min-width: 16rem;
   width: 25dvw;
   aspect-ratio: 1 / 1;
@@ -102,7 +102,11 @@ body {
   font-size: clamp(4rem, 7dvw, 8rem);
 }
 
-#btn {
+#clock-time.hour {
+  font-size: clamp(3rem, 4dvw, 6rem);
+}
+
+i {
   color: rgb(32, 0, 192);
   font-size: clamp(2rem, 3dvw, 4rem);
   display: block;
@@ -110,10 +114,10 @@ body {
   cursor: pointer;
 }
 
-#btn:hover {
+i:hover {
   color: rgb(32, 0, 128);
 }
 
-#btn:active {
+i:active {
   transform: scale(0.9);
 }
